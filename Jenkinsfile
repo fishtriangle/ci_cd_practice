@@ -80,7 +80,8 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        echo "$DOCKERHUB_CREDENTIALS_PASSWORD" \
+                        # credentials() создаёт переменные _USR и _PSW
+                        echo "$DOCKERHUB_CREDENTIALS_PSW" \
                             | docker login -u "$DOCKERHUB_CREDENTIALS_USR" --password-stdin
                         docker push --all-tags "$DOCKERHUB_REPO"
                         docker logout
