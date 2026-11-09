@@ -1,10 +1,12 @@
 pipeline {
     agent any
 
-    // Автоматический запуск при каждом пуше в репозиторий
-    triggers {
-        pollSCM('H/2 * * * *')
-    }
+    // Триггеры отключены — запускайте вручную через "Build Now"
+    // Для автозапуска по расписанию (каждые 2 минуты) добавьте в UI Jenkins:
+    //   Job → Configure → Build Triggers → Poll SCM → H/2 * * * *
+    // triggers {
+    //     pollSCM('H/2 * * * *')
+    // }
 
     options {
         timestamps()
@@ -18,9 +20,9 @@ pipeline {
         DOCKERHUB_REPO = 'fishtriangle/calc'
         // Секрет типа Username/Password с ID "dockerhub-credentials"
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
-        // WORKSPACE внутри контейнера: /var/jenkins_home/workspace/<job>
-        // На хосте (виден Docker daemon): /home/gregory/jenkins-workspace/workspace/<job>
-        WORKSPACE_HOST = '/home/gregory/jenkins-workspace' + WORKSPACE.replace('/var/jenkins_home', '')
+        // Путь workspace на хосте (Docker Desktop VM видит /home/... через virtiofs)
+        // Замените на ваш путь, если Jenkins в Docker на другой машине
+        HOST_WORKSPACE = '/home/gregory/jenkins-workspace/workspace/ci-cd-practice'
     }
 
     stages {
@@ -48,7 +50,7 @@ pipeline {
             steps {
                 sh """
                     docker run --rm \
-                        -v \"\$WORKSPACE_HOST:/ci\" \
+                        -v "\$HOST_WORKSPACE:/ci" \
                         -w /ci \
                         python:3.12-slim \
                         bash -c "python -m venv /tmp/.venv && \
@@ -62,7 +64,7 @@ pipeline {
         stage('Build image') {
             steps {
                 script {
-                    sh "docker build -t ${DOCKERHUB_REPO}:${GIT_SHA} -t ${DOCKERHUB_REPO}:latest \$WORKSPACE_HOST"
+                    sh "docker build -t ${DOCKERHUB_REPO}:${GIT_SHA} -t ${DOCKERHUB_REPO}:latest ."
                 }
             }
         }
