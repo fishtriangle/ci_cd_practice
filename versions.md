@@ -5,3 +5,4 @@
 - 2026-11-09T23:07:43+02:00 4f7d698e6cb0e1f10cf086e10c40c2ad5cf7b269 Jenkins: фикс Docker-in-Docker через socket (WORKSPACE_HOST)
 - 2026-11-09T23:27:01+02:00 0a505a28e7f20a3e7e3babee529237049b548f9e Jenkins: фикс прав docker.sock (root) + путь хоста для volume
 - 2026-11-09T23:39:43+02:00 132c38a7aba1866c3eeee1da207ef8c7b4d446eb Jenkins: возвращён pollSCM, workspace восстановлен
+- 2026-11-09T23:53:20+02:00 db40f3e1877f0793b0b3b698d14e5f21f4aa5828 Проверка работы jenkins пайплайна
