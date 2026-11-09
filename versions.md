@@ -2,3 +2,4 @@
 - 2026-11-09T20:38:20+02:00 81d74cf17135555f9bc44cf0650c54fad8b83653 Добавлена джоба запуска тестов
 - 2026-11-09T22:18:39+02:00 37b7b22d9e85fec1a0ba44ae9948c5a4e3344ff1 интеграция с jenkins
 - 2026-11-09T22:36:46+02:00 11f790e89c2a5c91e534a74165e79c3c8003f351 fix jenkinsfile
+- 2026-11-09T23:07:43+02:00 4f7d698e6cb0e1f10cf086e10c40c2ad5cf7b269 Jenkins: фикс Docker-in-Docker через socket (WORKSPACE_HOST)
