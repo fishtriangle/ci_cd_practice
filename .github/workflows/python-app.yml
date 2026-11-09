@@ -23,6 +23,28 @@ jobs:
       - name: Run tests
         run: pytest -v
 
+  # deploy:
+  #   # Деплойится только если тесты прошли успешно
+  #   needs: test
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+
+  #     - name: Deploy to Heroku # Для запуска необходимо подключать оплату на сервисе
+  #       env:
+  #         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+  #         HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+  #       run: |
+  #         if [ -z "$HEROKU_API_KEY" ] || [ -z "$HEROKU_APP_NAME" ]; then
+  #           echo "::error::Set HEROKU_API_KEY and HEROKU_APP_NAME repository secrets"
+  #           exit 1
+  #         fi
+
+  #         # Heroku Git по HTTPS: логин api, пароль - API-ключ аккаунта
+  #         git push --force \
+  #           "https://api:${HEROKU_API_KEY}@git.heroku.com/${HEROKU_APP_NAME}.git" \
+  #           "HEAD:refs/heads/main"
+
   update-versions:
     # Токену нужен доступ на запись, иначе git push отклоняется
     permissions:

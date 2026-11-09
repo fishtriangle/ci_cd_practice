@@ -15,6 +15,10 @@ ci_cd_practice/
 ├── tests/
 │   ├── __init__.py
 │   └── test_calculator.py
+├── .github/
+│   └── workflows/
+│       └── python-app.yml  # CI: тесты, деплой, versions.md
+├── Procfile
 ├── requirements.txt
 ├── pytest.ini
 └── README.md
@@ -81,3 +85,50 @@ pytest
 ```bash
 pytest -v
 ```
+
+## CI/CD
+
+На каждый коммит в `main` запускается GitHub Actions (файл `.github/workflows/python-app.yml`):
+
+| Джоба | Что делает |
+|---|---|
+| `test` | Устанавливает Python 3.12, ставит зависимости, запускает `pytest -v` |
+| `deploy` | Пушит в Heroku (запускается **только** если `test` прошёл) |
+| `update-versions` | Дописывает дату, хеш и сообщение коммита в `versions.md` |
+
+## Деплой на Heroku
+
+### Подготовка
+
+1. Создать приложение на Heroku (один раз):
+
+   ```bash
+   heroku create <имя-приложения>
+   ```
+
+2. В настройках репозитория GitHub (Settings → Secrets and variables → Actions) добавить:
+   | Имя | Значение |
+   |---|---|
+   | `HEROKU_API_KEY` | Ключ из Heroku → Account Settings → API Key |
+   | `HEROKU_APP_NAME` | Имя приложения (например `my-calculator`) |
+
+### Как работает деплой
+
+Джоба `deploy` пушит коммит напрямую в Heroku Git-remote по HTTPS:
+
+```
+https://api:<API_KEY>@git.heroku.com/<APP>.git
+```
+
+### Важное примечание
+
+Приложение — консольное (`input()`), а Heroku `web`-dyno не имеет stdin.
+При запуске `web: python -m app.main` процесс сразу завершается с ошибкой EOF.
+
+Чтобы протестировать приложение на Heroku:
+
+```bash
+heroku run python -m app.main
+```
+
+Это запустит приложение в отдельном one-off dyno с интерактивной консолью.
