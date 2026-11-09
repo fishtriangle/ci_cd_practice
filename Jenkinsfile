@@ -1,12 +1,10 @@
 pipeline {
     agent any
 
-    // Триггеры отключены — запускайте вручную через "Build Now"
-    // Для автозапуска по расписанию (каждые 2 минуты) добавьте в UI Jenkins:
-    //   Job → Configure → Build Triggers → Poll SCM → H/2 * * * *
-    // triggers {
-    //     pollSCM('H/2 * * * *')
-    // }
+    // Опрос репозитория каждые 2 минуты: новый коммит -> запуск пайплайна
+    triggers {
+        pollSCM('H/2 * * * *')
+    }
 
     options {
         timestamps()
