@@ -24,8 +24,9 @@ RUN apt-get update && \
 RUN groupadd -g 986 docker 2>/dev/null || true && \
     usermod -aG docker jenkins
 
-# Настроим safe.directory для git (для root и jenkins)
-RUN echo '[safe]\n	directory = /var/jenkins_home/workspace/*' >> /etc/gitconfig
+# Git safe.directory: Jenkins работает от root, а часть файлов принадлежит uid 1000.
+# Покрываем и workspace, и caches (lightweight checkout хранит репозиторий там)
+RUN printf '[safe]\n	directory = *\n' >> /etc/gitconfig
 
 # Запускаем от root — нужно для доступа к docker.sock (Docker Desktop на Linux)
 # В продакшене используйте socat-прокси или TCP-сокет
