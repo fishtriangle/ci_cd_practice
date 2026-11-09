@@ -7,3 +7,4 @@
 - 2026-11-09T23:39:43+02:00 132c38a7aba1866c3eeee1da207ef8c7b4d446eb Jenkins: возвращён pollSCM, workspace восстановлен
 - 2026-11-09T23:53:20+02:00 db40f3e1877f0793b0b3b698d14e5f21f4aa5828 Проверка работы jenkins пайплайна
 - 2026-11-10T00:03:47+02:00 3f4dbf67d836d58fbc5eb8b721c588bb6f7974a6 Jenkins: git safe.directory = * (доступ root к чужим кэшам)
+- 2026-11-10T00:08:41+02:00 b1f667ec43d4fd5e5b8fa053ff9ce5effc6a75ab Jenkins: фикс переменной пароля DockerHub (_PSW вместо _PASSWORD)
