@@ -18,6 +18,9 @@ pipeline {
         DOCKERHUB_REPO = 'fishtriangle/calc'
         // Секрет типа Username/Password с ID "dockerhub-credentials"
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
+        // WORKSPACE внутри контейнера: /var/jenkins_home/workspace/<job>
+        // На хосте (виден Docker daemon): /home/gregory/jenkins-workspace/workspace/<job>
+        WORKSPACE_HOST = '/home/gregory/jenkins-workspace' + WORKSPACE.replace('/var/jenkins_home', '')
     }
 
     stages {
@@ -43,23 +46,23 @@ pipeline {
 
         stage('Test') {
             steps {
-                sh '''
+                sh """
                     docker run --rm \
-                        -v "$WORKSPACE:/ci" \
+                        -v \"\$WORKSPACE_HOST:/ci\" \
                         -w /ci \
                         python:3.12-slim \
                         bash -c "python -m venv /tmp/.venv && \
                                  /tmp/.venv/bin/pip install --upgrade pip && \
                                  /tmp/.venv/bin/pip install -r requirements.txt && \
                                  /tmp/.venv/bin/python -m pytest -v"
-                '''
+                """
             }
         }
 
         stage('Build image') {
             steps {
                 script {
-                    sh "docker build -t ${DOCKERHUB_REPO}:${GIT_SHA} -t ${DOCKERHUB_REPO}:latest ."
+                    sh "docker build -t ${DOCKERHUB_REPO}:${GIT_SHA} -t ${DOCKERHUB_REPO}:latest \$WORKSPACE_HOST"
                 }
             }
         }
