@@ -44,10 +44,14 @@ pipeline {
         stage('Test') {
             steps {
                 sh '''
-                    python3 -m venv .venv
-                    .venv/bin/pip install --upgrade pip
-                    .venv/bin/pip install -r requirements.txt
-                    .venv/bin/python -m pytest -v
+                    docker run --rm \
+                        -v "$WORKSPACE:/ci" \
+                        -w /ci \
+                        python:3.12-slim \
+                        bash -c "python -m venv /tmp/.venv && \
+                                 /tmp/.venv/bin/pip install --upgrade pip && \
+                                 /tmp/.venv/bin/pip install -r requirements.txt && \
+                                 /tmp/.venv/bin/python -m pytest -v"
                 '''
             }
         }
