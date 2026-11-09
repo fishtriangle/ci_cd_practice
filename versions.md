@@ -8,3 +8,4 @@
 - 2026-11-09T23:53:20+02:00 db40f3e1877f0793b0b3b698d14e5f21f4aa5828 Проверка работы jenkins пайплайна
 - 2026-11-10T00:03:47+02:00 3f4dbf67d836d58fbc5eb8b721c588bb6f7974a6 Jenkins: git safe.directory = * (доступ root к чужим кэшам)
 - 2026-11-10T00:08:41+02:00 b1f667ec43d4fd5e5b8fa053ff9ce5effc6a75ab Jenkins: фикс переменной пароля DockerHub (_PSW вместо _PASSWORD)
+- 2026-11-10T00:18:31+02:00 932d6db894f4e5b589cb706e5026b92aff505c1d Jenkins: push только тегов sha и latest вместо --all-tags
