@@ -83,7 +83,10 @@ pipeline {
                         # credentials() создаёт переменные _USR и _PSW
                         echo "$DOCKERHUB_CREDENTIALS_PSW" \
                             | docker login -u "$DOCKERHUB_CREDENTIALS_USR" --password-stdin
-                        docker push --all-tags "$DOCKERHUB_REPO"
+                        # Пушим конкретные теги, а не --all-tags,
+                        # чтобы случайно не отправить локальные тестовые теги
+                        docker push "$DOCKERHUB_REPO:$GIT_SHA"
+                        docker push "$DOCKERHUB_REPO:latest"
                         docker logout
                     '''
                 }
